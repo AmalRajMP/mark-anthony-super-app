@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+import { useStore } from "../store/useStore"
+
 import "./RegistrationForm.css"
 
 const RegistrationForm = () => {
@@ -19,6 +21,7 @@ const RegistrationForm = () => {
   const [checkBoxError, setCheckBoxError] = useState("")
 
   const navigate = useNavigate()
+  const setUser = useStore((state) => state.setUser)
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target
@@ -34,8 +37,16 @@ const RegistrationForm = () => {
 
     let isValid = true
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const mobileRegex = /^\d{10}$/
+    const usernameRegex = /^[a-zA-Z0-9]+$/
+    const nameRegex = /^[A-Za-z\s]+$/
+
     if (formData.name.trim() === "") {
       setNameError("Field is required")
+      isValid = false
+    } else if (!nameRegex.test(formData.name.trim())) {
+      setNameError("Only alphabets are allowed")
       isValid = false
     } else {
       setNameError("")
@@ -44,6 +55,9 @@ const RegistrationForm = () => {
     if (formData.username.trim() === "") {
       setUsernameError("Field is required")
       isValid = false
+    } else if (!usernameRegex.test(formData.username.trim())) {
+      setUsernameError("Only letters and numbers are allowed")
+      isValid = false
     } else {
       setUsernameError("")
     }
@@ -51,12 +65,18 @@ const RegistrationForm = () => {
     if (formData.email.trim() === "") {
       setEmailError("Field is required")
       isValid = false
+    } else if (!emailRegex.test(formData.email.trim())) {
+      setEmailError("Enter a valid email")
+      isValid = false
     } else {
       setEmailError("")
     }
 
     if (formData.mobile.trim() === "") {
       setMobileError("Field is required")
+      isValid = false
+    } else if (!mobileRegex.test(formData.mobile.trim())) {
+      setMobileError("Enter a valid 10-digit mobile number")
       isValid = false
     } else {
       setMobileError("")
@@ -70,7 +90,12 @@ const RegistrationForm = () => {
     }
 
     if (isValid) {
-      console.log(formData)
+      setUser({
+        name: formData.name.trim(),
+        username: formData.username.trim(),
+        email: formData.email.trim(),
+        mobile: formData.mobile.trim(),
+      })
       navigate("/categories")
     }
   }
