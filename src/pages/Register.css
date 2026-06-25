@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.register-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+.register-left {
+  flex: 1;
+  background-image: url("../assets/register-bg.png");
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  align-items: flex-end;
+
+  padding: 50px;
+}
+
+.register-left h1 {
+  color: #ffffff;
+  font-size: 3rem;
+  font-weight: bold;
+  max-width: 450px;
+}
+
+.register-right {
+  flex: 1;
+  background-color: #000000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
